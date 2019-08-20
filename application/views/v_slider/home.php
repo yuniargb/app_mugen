@@ -1,16 +1,18 @@
 <div class="x_panel">
     <div class="x_title">
-        <h2>Data Size</h2>
+        <h2>Data Slider</h2>
         <div class="clearfix"></div>
     </div>
     <div class="x_content">
         <p class="text-muted font-13 m-b-30">
             <!-- for descriotion in here > <-->
         </p>
-        <table id="datatable-c_size" class="table table-striped table-bordered">
+        <table id="datatable-c_slider" class="table table-striped table-bordered">
             <thead>
                 <tr>
-                    <th>Size</th>
+                    <th>Judul</th>
+                    <th>Deskripsi</th>
+                    <th>Gambar</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -22,8 +24,8 @@
     $(document).ready(function() {
         /* start datatable */
         var handleDataTableButtons = function() {
-            if ($("#datatable-c_size").length) {
-                $("#datatable-c_size").DataTable({
+            if ($("#datatable-c_slider").length) {
+                $("#datatable-c_slider").DataTable({
                     'order': [
                         [0, 'asc']
                     ],
@@ -111,14 +113,14 @@
             load_form('<?php echo $url_edit; ?>' + '/' + id, 'Edit Data');
         },
         deletedata: function(id) {
-            $('#confirc_size').modal('show');
-            $("#confirc_size  input[name=id_size]").val(id);
+            $('#confirc_slider').modal('show');
+            $("#confirc_slider  input[name=id_size]").val(id);
         }
     }
     /*end edit, delete  function */
 
     //start delete data
-    $("#confirc_size button[action=delete]").click(function() {
+    $("#confirc_slider button[action=delete]").click(function() {
         var url;
         url = '<?php echo $url_delete ?>';
         $.ajax({
@@ -127,13 +129,13 @@
             dataType: "json",
             cache: false,
             data: {
-                id_size: $("#confirc_size input[name=id_size]").val()
+                id_size: $("#confirc_slider input[name=id_size]").val()
             },
             success: function(data) {
-                $('#confirc_size').modal('hide');
+                $('#confirc_slider').modal('hide');
                 if (data.hasil === true) {
                     console.log('ok');
-                    $('#datatable-c_size').dataTable().fnReloadAjax();
+                    $('#datatable-c_slider').dataTable().fnReloadAjax();
                 } else {
                     console.log('gagal');
                 }

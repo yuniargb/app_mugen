@@ -1,28 +1,30 @@
 <?php
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 
 /* class dengan nama C_size */
 
-class C_size extends CI_Controller {
+class C_size extends CI_Controller
+{
     /* fungsi construct ini akan di load terlebih dahulu, sebelum fungsi index
      * umumnya di dalam fungsi ini berupa settingan awal
      */
 
-    function __construct() {
+    function __construct()
+    {
         parent::__construct();
         /* mulai load C_size_model.php di folder model */
-        $this->load->model('Mo_size', 'size'); 
+        $this->load->model('Mo_size', 'size');
         /* cara pemanggilan C_size menjadi size */
         /* selesai load C_size_model.php di folder model */
-       
     }
 
-   
+
     /* fungsi index yang di load pertama pada saat controller C_size di akses */
 
-    public function index() {
+    public function index()
+    {
 
         /* setting array key untuk di home.php agar urlnya dinamis, maka 
          * ketika copy home.php hanya mengubah parameternya di controller saja
@@ -37,17 +39,18 @@ class C_size extends CI_Controller {
         $this->load->view('v_size/home', $data);
         /* mengakses folder v_size, lalu ke file home.php, 
          * dengan mengirim variabel data yang isinya array */
-        $this->load->view('v_size/confirm_delete', $data); 
+        $this->load->view('v_size/confirm_delete', $data);
         /* mengakses folder v_size, lalu ke file confirm_delete.php,
          *  dengan mengirim variabel data yang isinya array */
     }
 
     /* fungsi untuk mendapatkan data dan menampilkan di tabel pada file home.php */
 
-    public function grid() {
+    public function grid()
+    {
         echo json_encode(array(
-            "data" => $this->size->getGridData()->result() 
-                /* mengakses ke model size, ke fungsi getGridData, 
+            "data" => $this->size->getGridData()->result()
+            /* mengakses ke model size, ke fungsi getGridData, 
                  * lalu hasilnya sebuah array assosiatif */
         ));
     }
@@ -56,7 +59,8 @@ class C_size extends CI_Controller {
      * data, lalu setting array terhadap inputannya
      */
 
-    function add() {
+    function add()
+    {
         $data['title'] = 'Add - Jenis'; //setting judul, yang akan berubah di form.php
         $data['default']['nama'] = ''; // setting input dengan nama, ini untuk nama_size defaultnya kosong
         $data['url_post'] = site_url('c_size/addpost'); //membuat url_post dengan parameter ke controllernya lalu ke fungsi addpost,dalam fungsi addpost akan menyisiplkan ke database
@@ -70,7 +74,8 @@ class C_size extends CI_Controller {
 
     /* fungsi untuk post data ketika melakukan add data, fungsi ini akan masuk ke database */
 
-    public function addpost() {
+    public function addpost()
+    {
         $this->form_validation->set_rules('nama', 'Nama', 'required'); //pengecekan, jika properties input nama kosong, data tidak akan tersimpan,dan field tersebut harus diisi
         if ($this->form_validation->run() == TRUE) { // jika field yang dibutuhkan telah terisi maka nilai true
             $nama = $this->input->post('nama'); // menangkap post dari form.php ketika add data, dengan properties namenya adalah nama
@@ -113,7 +118,8 @@ class C_size extends CI_Controller {
 
     /* fungsi edit ini akan mensetting nilai-nilai di form ketika mengklik tombol edit */
 
-    function edit($id) {
+    function edit($id)
+    {
         $row = $this->size->getby_id($id)->row(); /* mendapatkan nilai data berdasarkan id, dan berupa row, yaitu 1 data */
         $data['title'] = 'Edit - Jenis';
         $data['default']['nama'] = $row->nama_size; /* setting isi properties nama dengan datanya */
@@ -126,7 +132,8 @@ class C_size extends CI_Controller {
 
     /* fungsi untuk post data ketika melakukan edit data, fungsi ini akan masuk ke database */
 
-    function editpost() {
+    function editpost()
+    {
         $this->form_validation->set_rules('nama', 'Nama', 'required'); //pengecekan, jika properties input nama kosong, data tidak akan tersimpan,dan field tersebut harus diisi
         if ($this->form_validation->run() == TRUE) { // jika field yang dibutuhkan telah terisi maka nilai true
             $id = $this->input->post('id'); // menangkap post dari form.php ketika edit data, dengan properties namenya adalah id
@@ -160,7 +167,8 @@ class C_size extends CI_Controller {
 
     /* fungsi untuk delete data */
 
-    public function remove() {
+    public function remove()
+    {
         $id = $this->input->post('id_size'); // menangkap post dari form.php ketika edit data, dengan properties namenya adalah id_size
         $this->size->delete($id); /* mengakses model size, lalu ke fungsi delete dengan parameter sebuah id */
 
@@ -173,5 +181,4 @@ class C_size extends CI_Controller {
         /* konversi array json, yang akan terkirim ke form.php */
         echo json_encode($jsonmsg);
     }
-
 }

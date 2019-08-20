@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 19, 2019 at 06:59 AM
+-- Generation Time: Aug 20, 2019 at 06:16 AM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.3.3
 
@@ -100,7 +100,7 @@ CREATE TABLE `m_produk` (
 
 CREATE TABLE `m_size` (
   `id_size` int(11) NOT NULL,
-  `size` varchar(30) NOT NULL
+  `nama_size` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
