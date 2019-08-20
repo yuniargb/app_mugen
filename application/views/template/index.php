@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<<<<<<< HEAD
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <!-- Meta, title, CSS, favicons, etc. -->
@@ -46,6 +47,82 @@
                     <div class="navbar nav_title" style="border: 0;">
                         <a href="index.html" class="site_title"><i class="fa fa-laptop"></i> <span>MUGEN</span></a>
                     </div>
+=======
+                        <div class="clearfix"></div>
+
+                        <!-- menu profile quick info -->
+                        <div class="profile clearfix">
+                            <div class="profile_pic">
+                                <img src="<?php echo $base; ?>public/production/images/img.jpg" alt="..." class="img-circle profile_img">
+                            </div>
+                            <div class="profile_info">
+                                <span>Halo</span>
+                                <h2>Admin</h2>
+                            </div>
+                        </div>
+                        <!-- /menu profile quick info -->
+
+                        <br />
+
+                        <!-- sidebar menu -->
+                        <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+                            <div class="menu_section">
+                                <h3>MENU</h3>
+                                <ul class="nav side-menu">
+                                    <li><a><i class="fa fa-users"></i> Security<span class="fa fa-chevron-down"></span></a>
+                                        <ul class="nav child_menu">
+                                           <li><a onclick="ToController('c_role', 'Data Role')">Role application</a></li>
+                                           <li><a onclick="ToController('c_userlogin', 'Data Login')">User Login </a></li>
+
+                                        </ul>
+                                    </li>
+                                </ul>
+                                 <ul class="nav side-menu">
+                                    <li><a><i class="fa fa-database"></i> Master <span class="fa fa-chevron-down"></span></a>
+                                        <ul class="nav child_menu">
+                                            
+                                            
+                                            <li><a onclick="ToController('c_customer', 'Data Customer ')">Customer</a></li>
+                                            <li><a onclick="ToController('c_size', 'Data Size ')">Size</a></li>
+                                            <li><a onclick="ToController('c_warna', 'Data warna ')">Warna</a></li>
+                                            <li><a onclick="ToController('c_kategory', 'Data kategory ')">Kategory</a></li>
+                                            <li><a onclick="ToController('c_tipe', 'Data Tipe ')">Tipe</a></li>
+                                            <li><a onclick="ToController('c_brand', 'Data Brand ')">Brand</a></li>
+                                            <li><a onclick="ToController('c_produk', 'Data Produk ')">Produk</a></li>
+                                              
+                                        </ul>
+                                    </li>
+                                </ul>
+                                 <ul class="nav side-menu">
+                                    <li><a><i class="fa fa-globe"></i> CMS<span class="fa fa-chevron-down"></span></a>
+                                        <ul class="nav child_menu">
+                                           <li><a onclick="ToController('c_role', 'Data Role')">Kategory Berita</a></li>
+                                           <li><a onclick="ToController('c_role', 'Data Role')">Semua Berita</a></li>
+                                           <li><a onclick="ToController('c_role', 'Data Role')">Tambah Berita</a></li>
+                                           <li><a onclick="ToController('c_role', 'Data Role')">Semua Halaman</a></li>
+                                           <li><a onclick="ToController('c_role', 'Data Role')">Tambah Halaman</a></li>
+
+                                        </ul>
+                                    </li>
+                                </ul>
+                                   <ul class="nav side-menu">
+                                    <li><a><i class="fa fa-shopping-cart"></i>Data Transaksi<span class="fa fa-chevron-down"></span></a>
+                                        <ul class="nav child_menu">
+                                            <li><a onclick="ToController('c_transaksi', 'Data Transaksi')">Data Transaksi</a></li>
+
+                                        </ul>
+                                    </li>
+                                </ul>
+                                  <ul class="nav side-menu">
+                                    <li><a><i class="fa fa-print"></i> Laporan <span class="fa fa-chevron-down"></span></a>
+                                        <ul class="nav child_menu">
+                                           <!--<li><a onclick="ToController('c_role', 'Data Role')">Role application</a></li>
+-->
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+>>>>>>> d45323a4af42f33d09d19f15e8d7cd56036b9266
 
                     <div class="clearfix"></div>
 
