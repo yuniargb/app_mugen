@@ -70,6 +70,7 @@
                                     <li><a><i class="fa fa-users"></i> Security<span class="fa fa-chevron-down"></span></a>
                                         <ul class="nav child_menu">
                                            <li><a onclick="ToController('c_role', 'Data Role')">Role application</a></li>
+                                           <li><a onclick="ToController('c_userlogin', 'Data Login')">User Login </a></li>
 
                                         </ul>
                                     </li>
@@ -83,6 +84,9 @@
                                             <li><a onclick="ToController('c_size', 'Data Size ')">Size</a></li>
                                             <li><a onclick="ToController('c_warna', 'Data warna ')">Warna</a></li>
                                             <li><a onclick="ToController('c_kategory', 'Data kategory ')">Kategory</a></li>
+                                            <li><a onclick="ToController('c_tipe', 'Data Tipe ')">Tipe</a></li>
+                                            <li><a onclick="ToController('c_brand', 'Data Brand ')">Brand</a></li>
+                                            <li><a onclick="ToController('c_produk', 'Data Produk ')">Produk</a></li>
                                               
                                         </ul>
                                     </li>

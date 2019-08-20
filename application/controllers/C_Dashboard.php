@@ -11,7 +11,8 @@ class C_Dashboard extends CI_Controller {
             "site" => site_url(),
         ); 
         {
-           $this->load->view('template/index', $data);
+          $this->load->view('template/index', $data);
+          // $this->load->view('template/Dashboard_cms', $data);
          
         }
     }
