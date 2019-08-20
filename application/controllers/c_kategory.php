@@ -1,166 +1,135 @@
 <?php
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 
 /* class dengan nama C_kategory */
 
-class C_kategory extends CI_Controller {
+class C_kategory extends CI_Controller
+{
     /* fungsi construct ini akan di load terlebih dahulu, sebelum fungsi index
      * umumnya di dalam fungsi ini berupa settingan awal
      */
 
-    function __construct() {
+    function __construct()
+    {
         parent::__construct();
         /* mulai load C_kategory_model.php di folder model */
-        $this->load->model('Mo_kategory', 'kategory'); 
+        $this->load->model('Mo_kategory', 'kategory');
+        $this->load->model('Mo_global', 'global');
         /* cara pemanggilan C_kategory menjadi kategory */
         /* selesai load C_kategory_model.php di folder model */
-       
     }
 
-   
+
     /* fungsi index yang di load pertama pada saat controller C_kategory di akses */
 
-    public function index() {
+    public function index()
+    {
 
-        /* setting array key untuk di home.php agar urlnya dinamis, maka 
-         * ketika copy home.php hanya mengubah parameternya di controller saja
-         */
-        $data = array(
-            "base" => base_url(),
-            "url_grid" => site_url('c_kategory/grid'),
-            "url_add" => site_url('c_kategory/add'),
-            "url_edit" => site_url('c_kategory/edit'),
-            "url_delete" => site_url('c_kategory/remove'),
-        );
-        $this->load->view('v_kategory/home', $data);
-        /* mengakses folder v_kategory, lalu ke file home.php, 
-         * dengan mengirim variabel data yang isinya array */
-        $this->load->view('v_kategory/confirm_delete', $data); 
-        /* mengakses folder v_kategory, lalu ke file confirm_delete.php,
-         *  dengan mengirim variabel data yang isinya array */
+        $data['head'] = 'Kategori';
+        $data['subhead'] = 'List Data Kategori';
+        $data['kategori'] = $this->global->getAll('m_kategori')->result();
+        // $this->load->view('template/headB', $data);
+        // $this->load->view('template/menuB', $data);
+        // $this->load->view('template/sidebarB', $data);
+        $this->load->view('backend/kategori/homeKategori', $data);
+        // $this->load->view('template/footerB', $data);
     }
 
     /* fungsi untuk mendapatkan data dan menampilkan di tabel pada file home.php */
 
-    public function grid() {
-        echo json_encode(array(
-            "data" => $this->kategory->getGridData()->result() 
-                /* mengakses ke model kategory, ke fungsi getGridData, 
-                 * lalu hasilnya sebuah array assosiatif */
-        ));
+    public function add($id = null)
+    {
+        $data['head'] = 'Kategori';
+        $data['subhead'] = 'Tambah Kategori';
+        $data['link'] = base_url('addkor');
+        // $this->load->view('template/headB', $data);
+        // $this->load->view('template/menuB', $data);
+        // $this->load->view('template/sidebarB', $data);
+        $this->load->view('backend/kategori/addKategoriB', $data);
+        // $this->load->view('template/footerB', $data);
     }
 
-    /* fungsi ini akan mengakses form untuk kebutuhan add 
-     * data, lalu setting array terhadap inputannya
-     */
+    public function edit($id = null)
+    {
+        $data['head'] = 'Kategori';
+        $data['subhead'] = 'Edit Kategori';
+        $data['link'] = base_url('edkor');
+        $where = array('id_kategori' => $id);
+        $data['k'] = $this->global->getAll('m_kategori', $where)->row();
 
-    function add() {
-        $data['title'] = 'Add - Jenis'; //setting judul, yang akan berubah di form.php
-        $data['default']['nama'] = ''; // setting input dengan nama, ini untuk nama_kategory defaultnya kosong
-        $data['url_post'] = site_url('c_kategory/addpost'); //membuat url_post dengan parameter ke controllernya lalu ke fungsi addpost,dalam fungsi addpost akan menyisiplkan ke database
-        $data['url_index'] = site_url('c_kategory'); //membuat url_index dengan parameter balik lagi ke controllernya, otomatis akan masuk ke fungsi index
-        $data['id'] = 0; //pads saat add data, id dibuat menjadi 0
+        // print_r($data['k']);
 
-        $this->load->view('v_kategory/form', $data);
-        /* mengakses folder v_kategory, lalu ke file form.php, 
-         * dengan mengirim variabel data yang isinya array */
+        // $this->load->view('template/headB', $data);
+        // $this->load->view('template/menuB', $data);
+        // $this->load->view('template/sidebarB', $data);
+        $this->load->view('backend/kategori/addKategoriB', $data);
+        // $this->load->view('template/footerB', $data);
     }
 
-    /* fungsi untuk post data ketika melakukan add data, fungsi ini akan masuk ke database */
-
-    public function addpost() {
-        $this->form_validation->set_rules('nama', 'Nama', 'required'); //pengecekan, jika properties input nama kosong, data tidak akan tersimpan,dan field tersebut harus diisi
-        if ($this->form_validation->run() == TRUE) { // jika field yang dibutuhkan telah terisi maka nilai true
-            $nama = $this->input->post('nama'); // menangkap post dari form.php ketika add data, dengan properties namenya adalah nama
-
-            /* membuat record sebuah array, array ini akan masuk ke database */
+    public function addpost()
+    {
+        $this->form_validation->set_rules('nama', 'Nama', 'required');
+        if ($this->form_validation->run() == TRUE) {
             $record = array(
-                "nama_kategory" => $nama,
+                "nama_kategori" => $this->input->post('nama'),
             );
-
-            $checkdata = $this->kategory->checkdata($nama); // melakukan pengecekan data
-            if ($checkdata > 0) { /* jika data bernilai lebih dari 0, maka data tidak tersimpan, karena sudah ada */
-                $valid = 'false';
-                $message = 'data already exist';
-                $err_name = "Name Jenis sudah ada";
-            } else { /* jika data belum ada,maka berhasil di simpan */
-                $this->kategory->insert($record);
-                $valid = 'true';
-                $message = "Insert data, success";
-                $err_name = null;
+            $insert = $this->global->insert('m_kategori', $record);
+            if ($insert > 0) {
+                $json = array(
+                    'hasil' => 1,
+                    'pesan' => 'data berhasil ditambahkan'
+                );
+            } else {
+                $json = array(
+                    'hasil' => 0,
+                    'pesan' => 'data gagal ditambahkan'
+                );
             }
-
-            /* membuat array, yang akan dikonversi menjadi json untuk kebutuhan ajax */
-            $jsonmsg = array(
-                "msg" => $message,
-                "hasil" => $valid,
-                "err_nama" => $err_name,
-            );
         } else {
-            /* membuat array, yang akan dikonversi menjadi json untuk kebutuhan ajax */
-            $jsonmsg = array(
-                "msg" => 'Insert Data Failed',
-                "hasil" => 'false',
-                "err_nama" => form_error('nama'),
+            $json = array(
+                'hasil' => 0,
+                'pesan' => 'data gagal ditambahkan'
             );
         }
 
-        /* konversi array json, yang akan terkirim ke form.php */
-        echo json_encode($jsonmsg);
+        echo json_encode($json);
     }
 
-    /* fungsi edit ini akan mensetting nilai-nilai di form ketika mengklik tombol edit */
-
-    function edit($id) {
-        $row = $this->kategory->getby_id($id)->row(); /* mendapatkan nilai data berdasarkan id, dan berupa row, yaitu 1 data */
-        $data['title'] = 'Edit - Jenis';
-        $data['default']['nama'] = $row->nama_kategory; /* setting isi properties nama dengan datanya */
-
-        $data['url_post'] = site_url('c_kategory/editpost'); //membuat url_post dengan parameter ke controllernya lalu ke fungsi editpost,dalam fungsi addpost akan menyisiplkan ke database
-        $data['url_index'] = site_url('c_kategory'); //membuat url_index dengan parameter balik lagi ke controllernya, otomatis akan masuk ke fungsi index
-        $data['id'] = $id; /* id akan bernilai sesuai data yang di edit */
-        $this->load->view('v_kategory/form', $data); /* mengakses folder v_kategory, lalu ke file form.php, dengan mengirim variabel data yang isinya array */
-    }
-
-    /* fungsi untuk post data ketika melakukan edit data, fungsi ini akan masuk ke database */
-
-    function editpost() {
-        $this->form_validation->set_rules('nama', 'Nama', 'required'); //pengecekan, jika properties input nama kosong, data tidak akan tersimpan,dan field tersebut harus diisi
-        if ($this->form_validation->run() == TRUE) { // jika field yang dibutuhkan telah terisi maka nilai true
-            $id = $this->input->post('id'); // menangkap post dari form.php ketika edit data, dengan properties namenya adalah id
-            $nama = $this->input->post('nama'); // menangkap post dari form.php ketika add data, dengan properties namenya adalah nama
-
-            /* membuat record sebuah array, array ini akan masuk ke database */
+    function editpost()
+    {
+        $this->form_validation->set_rules('id', 'ID', 'required');
+        $this->form_validation->set_rules('nama', 'Nama', 'required');
+        if ($this->form_validation->run() == TRUE) {
             $record = array(
-                "nama_kategory" => $nama,
+                "nama_kategori" => $this->input->post('nama'),
             );
-
-            /* update ke database dengan memanggil model kategory, ke fungsi edit, dan mengirim parameter sebuah id, dan datanya berupa record */
-            $this->kategory->update($id, $record);
-
-            /* membuat array, yang akan dikonversi menjadi json untuk kebutuhan ajax */
-            $jsonmsg = array(
-                "msg" => 'Update Data Success',
-                "hasil" => 'true',
-                "err_nama" => null,
-            );
+            $where = array('id_kategori' => $this->input->post('id'));
+            $update = $this->global->update('m_kategori', $record, $where);
+            if ($update > 0) {
+                $this->session->set_flashdata('sukses', 'data berhasil diubah');
+                redirect(base_url('index.php/c_kategory'));
+            } else {
+                $this->session->set_flashdata('gagal', 'data gagal diubah');
+                redirect(base_url('index.php/c_kategory'));
+            }
         } else {
-            /* membuat array, yang akan dikonversi menjadi json untuk kebutuhan ajax */
-            $jsonmsg = array(
-                "msg" => 'Update Data Failed',
-                "hasil" => 'false',
-                "err_nama" => form_error('nama'),
-            );
+            $data['head'] = 'Kategori';
+            $data['subhead'] = 'Edit Kategori';
+            $data['link'] = base_url('index.php/c_kategory/editpost');
+            $this->load->view('template/headB', $data);
+            $this->load->view('template/menuB', $data);
+            $this->load->view('template/sidebarB', $data);
+            $this->load->view('backend/kategori/addKategoriB', $data);
+            $this->load->view('template/footerB', $data);
         }
-        /* konversi array json, yang akan terkirim ke form.php */
-        echo json_encode($jsonmsg);
     }
 
     /* fungsi untuk delete data */
 
-    public function remove() {
+    public function remove()
+    {
         $id = $this->input->post('id_kategory'); // menangkap post dari form.php ketika edit data, dengan properties namenya adalah id_kategory
         $this->kategory->delete($id); /* mengakses model kategory, lalu ke fungsi delete dengan parameter sebuah id */
 
@@ -173,5 +142,4 @@ class C_kategory extends CI_Controller {
         /* konversi array json, yang akan terkirim ke form.php */
         echo json_encode($jsonmsg);
     }
-
 }
