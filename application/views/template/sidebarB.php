@@ -12,7 +12,7 @@
             </li>
             <li><a><i class="fa fa-edit"></i> Master <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
-                    <li><a href="<?= base_url('kor') ?>" class="menus">Kategori</a></li>
+                    <li><a href="<?= base_url('kor') ?>" class="menus" data-menu="homeKategori">Kategori</a></li>
                     <li><a href="form_advanced.html">Warna</a></li>
                     <li><a href="form_validation.html">Size</a></li>
                     <li><a href="form_wizards.html">Produk</a></li>

@@ -16,7 +16,7 @@
                     <div class="x_title">
                         <h2>List Data <?= $head ?></h2>
                         <div style="float: right;">
-                            <a class="btn btn-success menus" href="<?= base_url('takor/tambah') ?>">Tambah</a>
+                            <a class="btn btn-success menus" href="<?= base_url('takor') ?>">Tambah</a>
                         </div>
                         <!-- <ul class="nav navbar-right panel_toolbox">
                             <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>

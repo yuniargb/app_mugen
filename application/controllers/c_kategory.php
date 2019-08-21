@@ -30,11 +30,64 @@ class C_kategory extends CI_Controller
         $data['head'] = 'Kategori';
         $data['subhead'] = 'List Data Kategori';
         $data['kategori'] = $this->global->getAll('m_kategori')->result();
-        // $this->load->view('template/headB', $data);
-        // $this->load->view('template/menuB', $data);
-        // $this->load->view('template/sidebarB', $data);
+        // $json = array(
+        //     'head'      => 'Kategori',
+        //     'subhead'   => 'List Data Kategori',
+        //     'kategori'  => $this->global->getAll('m_kategori')->result()
+        // );
         $this->load->view('backend/kategori/homeKategori', $data);
-        // $this->load->view('template/footerB', $data);
+        // $row = '';
+        // foreach($kategori as $k){
+        //     $id = $k['id_kategori'];
+        //     $nama = $k['nama_kategori'];
+        //     $row += "<tr>
+        //                 <td>". $id ."</td>
+        //                 <td>". $nama ."</td>
+        //                 <td>
+        //                     <a href='". base_url('eddkor/'.$id) ."'  data-menu='editKategori' class='btn btn-warning menus'>Edit</a>
+        //                     <a href='". base_url('hakor/'.$nama) ."'  data-menu='hapusKategori' class='btn btn-danger menus'>Hapus</a>
+        //                 </td>
+        //             </tr>";
+        // };
+        // $main = "<div class='right_col' role='main'>
+        //             <div class='>
+        //                 <div class='page-title'>
+        //                     <div class='title_left'>
+        //                         <h3>".$head."</h3>
+        //                     </div>
+        //                 </div>
+        //                 <div class='clearfix'></div>
+        //                 <div class='row'>
+        //                     <div class='col-md-12 col-sm-12 col-xs-12'>
+        //                         <div class='x_panel'>
+        //                             <div class='x_title'>
+        //                                 <h2>List Data "+ $subhead +"</h2>
+        //                                 <div style='float: right;'>
+        //                                     <a class='btn btn-success menus' href='".base_url('takor')."'>Tambah</a>
+        //                                 </div>
+        //                                 <div class='clearfix'></div>
+        //                             </div>
+        //                             <div class='x_content'>
+        //                                 <div class='bs-example-popovers' id='alert'></div>
+        //                                 <table id='datatable' class='table table-striped table-bordered'>
+        //                                     <thead>
+        //                                         <tr>
+        //                                             <th>ID Kategori</th>
+        //                                             <th>Kategori</th>
+        //                                             <th>Aksi</th>
+        //                                         </tr>
+        //                                     </thead>
+        //                                     <tbody>
+        //                                         ".$row."
+        //                                     </tbody>
+        //                                 </table>
+        //                             </div>
+        //                         </div>
+        //                     </div>
+        //                 </div>
+        //             </div>
+        //         </div>";
+        // echo $main;
     }
 
     /* fungsi untuk mendapatkan data dan menampilkan di tabel pada file home.php */
@@ -58,6 +111,9 @@ class C_kategory extends CI_Controller
         $data['link'] = base_url('edkor');
         $where = array('id_kategori' => $id);
         $data['k'] = $this->global->getAll('m_kategori', $where)->row();
+
+
+        $body = "asdasd";
 
         // print_r($data['k']);
 
