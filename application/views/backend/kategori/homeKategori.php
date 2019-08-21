@@ -18,27 +18,20 @@
                         <div style="float: right;">
                             <a class="btn btn-success menus" href="<?= base_url('takor') ?>">Tambah</a>
                         </div>
-                        <!-- <ul class="nav navbar-right panel_toolbox">
-                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                            </li>
-                            <li><a class="collapse-link" href="<?= base_url('index.php/c_kategory/add/tambah') ?>"><i class="fa fa-plus"></i></a>
-                            </li>
-                        </ul> -->
                         <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
-                        <div class="bs-example-popovers">
-                            <?php
-                            if ($this->session->flashdata('sukses')) { ?>
-                            <div class="alert alert-success alert-dismissible fade in" role="alert">
+                        <div class="bs-example-popovers" id="alert" >
+                            <?php if($this->session->flashdata('sukses')){ ?>
+                            <div class="alert alert-danger alert-dismissible fade in" role="alert" style="display: none;">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
                                 </button>
                                 <?= $this->session->flashdata('sukses') ?>
                             </div>
                             <?php } ?>
-                            <?php
-                            if ($this->session->flashdata('gagal')) { ?>
-                            <div class="alert alert-danger alert-dismissible fade in" role="alert">
+
+                            <?php if($this->session->flashdata('gagal')){ ?>
+                            <div class="alert alert-danger alert-dismissible fade in" role="alert" style="display: none;">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
                                 </button>
                                 <?= $this->session->flashdata('gagal') ?>

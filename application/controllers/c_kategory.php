@@ -15,6 +15,7 @@ class C_kategory extends CI_Controller
     {
         parent::__construct();
         /* mulai load C_kategory_model.php di folder model */
+        $this->load->library('parser');
         $this->load->model('Mo_kategory', 'kategory');
         $this->load->model('Mo_global', 'global');
         /* cara pemanggilan C_kategory menjadi kategory */
@@ -27,67 +28,67 @@ class C_kategory extends CI_Controller
     public function index()
     {
 
-        $data['head'] = 'Kategori';
-        $data['subhead'] = 'List Data Kategori';
-        $data['kategori'] = $this->global->getAll('m_kategori')->result();
+        $head = 'Kategori';
+        $subhead = 'List Data Kategori';
+        $kategori = $this->global->getAll('m_kategori')->result_array();
+
+        // print_r($kategori);
+        
         // $json = array(
         //     'head'      => 'Kategori',
         //     'subhead'   => 'List Data Kategori',
         //     'kategori'  => $this->global->getAll('m_kategori')->result()
         // );
-        $this->load->view('backend/kategori/homeKategori', $data);
-        // $row = '';
-        // foreach($kategori as $k){
-        //     $id = $k['id_kategori'];
-        //     $nama = $k['nama_kategori'];
-        //     $row += "<tr>
-        //                 <td>". $id ."</td>
-        //                 <td>". $nama ."</td>
-        //                 <td>
-        //                     <a href='". base_url('eddkor/'.$id) ."'  data-menu='editKategori' class='btn btn-warning menus'>Edit</a>
-        //                     <a href='". base_url('hakor/'.$nama) ."'  data-menu='hapusKategori' class='btn btn-danger menus'>Hapus</a>
-        //                 </td>
-        //             </tr>";
-        // };
-        // $main = "<div class='right_col' role='main'>
-        //             <div class='>
-        //                 <div class='page-title'>
-        //                     <div class='title_left'>
-        //                         <h3>".$head."</h3>
-        //                     </div>
-        //                 </div>
-        //                 <div class='clearfix'></div>
-        //                 <div class='row'>
-        //                     <div class='col-md-12 col-sm-12 col-xs-12'>
-        //                         <div class='x_panel'>
-        //                             <div class='x_title'>
-        //                                 <h2>List Data "+ $subhead +"</h2>
-        //                                 <div style='float: right;'>
-        //                                     <a class='btn btn-success menus' href='".base_url('takor')."'>Tambah</a>
-        //                                 </div>
-        //                                 <div class='clearfix'></div>
-        //                             </div>
-        //                             <div class='x_content'>
-        //                                 <div class='bs-example-popovers' id='alert'></div>
-        //                                 <table id='datatable' class='table table-striped table-bordered'>
-        //                                     <thead>
-        //                                         <tr>
-        //                                             <th>ID Kategori</th>
-        //                                             <th>Kategori</th>
-        //                                             <th>Aksi</th>
-        //                                         </tr>
-        //                                     </thead>
-        //                                     <tbody>
-        //                                         ".$row."
-        //                                     </tbody>
-        //                                 </table>
-        //                             </div>
-        //                         </div>
-        //                     </div>
-        //                 </div>
-        //             </div>
-        //         </div>";
-        // echo $main;
+        // $data = ('Actions', "<div class=\"text-center\"><a class=\"tip\" title='' href='"  "'><i class=\"fa fa-list\"></i></a> <a class=\"tip\" title='' href='' data-toggle='modal' data-target='#myModal'><i class=\"fa fa-users\"></i></a> <a class=\"tip\" title='' href='' data-toggle='modal' data-target='#myModal'><i class=\"fa fa-plus-circle\"></i></a> <a class=\"tip\" title='' href='' data-toggle='modal' data-target='#myModal'><i class=\"fa fa-edit\"></i></a> <a href='#' class='tip po' title='<b></b>' data-content=\"<p></p><a class='btn btn-danger po-delete' href=''></a> <button class='btn po-close'></button>\"  rel='popover'><i class=\"fa fa-trash-o\"></i></a></div>", 'id');
+
+        echo '<div class="right_col" role="main">
+                <div class="page-title">
+                    <div class="title_left">';
+                    echo '<h3>'.$head.'</h3>';
+                echo '</div>
+                </div>
+                <div class="clearfix"></div>';
+                    echo '<h2>List Data '. $head .'</h2>';
+                echo '<div style="float: right;">
+                        <a class="btn btn-success menus" href="'.base_url('takor') .'">Tambah</a>
+                    </div>
+                        <div class="clearfix"></div>
+                    <div class="x_content">
+                        <div class="bs-example-popovers" id="alert" >
+                        </div>
+                        <table id="datatable" class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>ID Kategori</th>
+                                    <th>Kategori</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>';
+                            foreach ($kategori as $msg) {
+                                echo '<tr>
+                                    <td>'. $msg['id_kategori'] .'</td>
+                                    <td>'. $msg['nama_kategori'] .'</td>
+                                    <td>
+                                        <a href="'. base_url('eddkor/' . $msg['id_kategori']) .'" class="btn btn-warning menus">Edit</a>
+                                        <a href="'. base_url('hakor' . $msg['id_kategori']) .'" class="btn btn-danger menus">Hapus</a>
+                                    </td>
+                                </tr>';
+                            }
+                        echo '</tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>';
+
+
+        
+        // $this->load->view('backend/kategori/homeKategori', $data);
+
+        
     }
 
     /* fungsi untuk mendapatkan data dan menampilkan di tabel pada file home.php */
@@ -111,17 +112,60 @@ class C_kategory extends CI_Controller
         $data['link'] = base_url('edkor');
         $where = array('id_kategori' => $id);
         $data['k'] = $this->global->getAll('m_kategori', $where)->row();
-
-
-        $body = "asdasd";
-
-        // print_r($data['k']);
-
-        // $this->load->view('template/headB', $data);
-        // $this->load->view('template/menuB', $data);
-        // $this->load->view('template/sidebarB', $data);
+        
         $this->load->view('backend/kategori/addKategoriB', $data);
-        // $this->load->view('template/footerB', $data);
+        
+    }
+
+    public function form(){
+        echo '<div class="right_col" role="main">
+    <div class="">
+        <div class="page-title">
+            <div class="title_left">
+                <h3><?= $head ?></h3>
+            </div>
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2><?= $subhead ?></h2>
+                            <div style="float: right;">
+                                <a class="btn btn-danger menus" href="<?= base_url('kor') ?>">Kembali</a>
+                            </div>
+                            <!-- <ul class="nav navbar-right panel_toolbox">
+                                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                </li>
+                            </ul> -->
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <br />
+                            <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left form-data" action="<?= $link ?>" method="POST" enctype="multipart/form-data">
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Kategori <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input type="hidden" id="first-name" name="id" value="<?= (isset($k)) ? $k->id_kategori : '' ?>" required="required" class="form-control col-md-7 col-xs-12">
+                                        <input type="text" id="first-name" name="nama" value="<?= (isset($k)) ? $k->nama_kategori : '' ?>" required="required" class="form-control col-md-7 col-xs-12">
+                                    </div>
+                                </div>
+                                <div class="ln_solid"></div>
+                                <div class="form-group">
+                                    <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                                        <!-- <button class="btn btn-primary" type="button">Cancel</button> -->
+                                        <button type="submit" class="btn btn-success">Submit</button>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>';
     }
 
     public function addpost()
@@ -135,25 +179,30 @@ class C_kategory extends CI_Controller
             if ($insert > 0) {
                 $json = array(
                     'hasil' => 1,
-                    'pesan' => 'data berhasil ditambahkan'
+                    'pesan' => 'data berhasil ditambahkan',
+                    'to' => 'kor'
                 );
+                $this->session->set_flashdata('sukses', 'data berhasil disimpan');
             } else {
                 $json = array(
                     'hasil' => 0,
-                    'pesan' => 'data gagal ditambahkan'
+                    'pesan' => 'data gagal ditambahkan',
+                    'to' => 'kor'
                 );
+                $this->session->set_flashdata('gagal', 'data gagal disimpan');
             }
         } else {
             $json = array(
                 'hasil' => 0,
-                'pesan' => 'data gagal ditambahkan'
+                'pesan' => 'data gagal ditambahkan',
+                'to' => 'kor'
             );
+            $this->session->set_flashdata('gagal', 'data gagal disimpan');
         }
-
         echo json_encode($json);
     }
 
-    function editpost()
+    public function editpost()
     {
         $this->form_validation->set_rules('id', 'ID', 'required');
         $this->form_validation->set_rules('nama', 'Nama', 'required');
@@ -162,40 +211,57 @@ class C_kategory extends CI_Controller
                 "nama_kategori" => $this->input->post('nama'),
             );
             $where = array('id_kategori' => $this->input->post('id'));
-            $update = $this->global->update('m_kategori', $record, $where);
+            $update = $this->global->update('m_kategori', $record,$where);
             if ($update > 0) {
-                $this->session->set_flashdata('sukses', 'data berhasil diubah');
-                redirect(base_url('index.php/c_kategory'));
+                $json = array(
+                    'hasil' => 1,
+                    'pesan' => 'data berhasil ubah',
+                    'to' => 'kor'
+                );
+                $this->session->set_flashdata('sukses', 'data berhasil disimpan');
             } else {
+                $json = array(
+                    'hasil' => 0,
+                    'pesan' => 'data gagal ubah',
+                    'to' => 'kor'
+                );
                 $this->session->set_flashdata('gagal', 'data gagal diubah');
-                redirect(base_url('index.php/c_kategory'));
             }
         } else {
-            $data['head'] = 'Kategori';
-            $data['subhead'] = 'Edit Kategori';
-            $data['link'] = base_url('index.php/c_kategory/editpost');
-            $this->load->view('template/headB', $data);
-            $this->load->view('template/menuB', $data);
-            $this->load->view('template/sidebarB', $data);
-            $this->load->view('backend/kategori/addKategoriB', $data);
-            $this->load->view('template/footerB', $data);
+           $json = array(
+                'hasil' => 0,
+                'pesan' => 'data gagal ubah',
+                'to' => 'kor'
+            );
+            $this->session->set_flashdata('gagal', 'data gagal diubah');
         }
+         echo json_encode($json);
     }
 
     /* fungsi untuk delete data */
 
-    public function remove()
+    public function remove($id)
     {
-        $id = $this->input->post('id_kategory'); // menangkap post dari form.php ketika edit data, dengan properties namenya adalah id_kategory
-        $this->kategory->delete($id); /* mengakses model kategory, lalu ke fungsi delete dengan parameter sebuah id */
-
-        /* membuat array, yang akan dikonversi menjadi json untuk kebutuhan ajax */
-        $jsonmsg = array(
-            "msg" => 'Delete Data Succces',
-            "hasil" => true
+        $record = array(
+            "nama_kategori" => $this->input->post('nama'),
         );
+        $where = array('id_kategori' => $id);
+        $delete = $this->global->delete('m_kategori',$where);
+        if ($delete > 0) {
+            $json = array(
+                'hasil' => 1,
+                'pesan' => 'data berhasil hapus',
+                'to' => 'kor'
+            );
+        } else {
+            $json = array(
+                'hasil' => 0,
+                'pesan' => 'data gagal hapus',
+                'to' => 'kor'
+            );
+        }
 
         /* konversi array json, yang akan terkirim ke form.php */
-        echo json_encode($jsonmsg);
+        echo json_encode($json);
     }
 }

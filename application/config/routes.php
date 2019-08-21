@@ -11,3 +11,4 @@ $route['takor'] = 'c_kategory/add/$1';
 $route['eddkor/(:any)'] = 'c_kategory/edit/$1';
 $route['addkor'] = 'c_kategory/addpost';
 $route['edkor'] = 'c_kategory/editpost';
+$route['hakor/(:any)'] = 'c_kategory/delete/$1';
