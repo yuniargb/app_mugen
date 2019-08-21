@@ -71,7 +71,10 @@ class C_kategory extends CI_Controller
                                     <td>'. $msg['nama_kategori'] .'</td>
                                     <td>
                                         <a href="'. base_url('eddkor/' . $msg['id_kategori']) .'" class="btn btn-warning menus">Edit</a>
-                                        <a href="'. base_url('hakor' . $msg['id_kategori']) .'" class="btn btn-danger menus">Hapus</a>
+                                        <form class="form-data" method="post" action="'. base_url('hakor').'">
+                                        <input type="hidden" name="id" value="'.$msg['id_kategori'].'">
+                                        <button type="submit" class="btn btn-danger">Hapus</button>
+                                        </form>
                                     </td>
                                 </tr>';
                             }
@@ -95,42 +98,28 @@ class C_kategory extends CI_Controller
 
     public function add($id = null)
     {
-        $data['head'] = 'Kategori';
-        $data['subhead'] = 'Tambah Kategori';
-        $data['link'] = base_url('addkor');
+        $head = 'Kategori';
+        $subhead = 'Tambah Kategori';
+        $link = base_url('addkor');
         // $this->load->view('template/headB', $data);
         // $this->load->view('template/menuB', $data);
         // $this->load->view('template/sidebarB', $data);
-        $this->load->view('backend/kategori/addKategoriB', $data);
+        // $this->load->view('backend/kategori/addKategoriB', $data);
         // $this->load->view('template/footerB', $data);
-    }
 
-    public function edit($id = null)
-    {
-        $data['head'] = 'Kategori';
-        $data['subhead'] = 'Edit Kategori';
-        $data['link'] = base_url('edkor');
-        $where = array('id_kategori' => $id);
-        $data['k'] = $this->global->getAll('m_kategori', $where)->row();
-        
-        $this->load->view('backend/kategori/addKategoriB', $data);
-        
-    }
-
-    public function form(){
-        echo '<div class="right_col" role="main">
+         echo '<div class="right_col" role="main">
     <div class="">
         <div class="page-title">
             <div class="title_left">
-                <h3><?= $head ?></h3>
+                <h3>'.$head.'</h3>
             </div>
             <div class="row">
                 <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="x_panel">
                         <div class="x_title">
-                            <h2><?= $subhead ?></h2>
+                            <h2>'.$subhead.'</h2>
                             <div style="float: right;">
-                                <a class="btn btn-danger menus" href="<?= base_url('kor') ?>">Kembali</a>
+                                <a class="btn btn-danger menus" href="'.base_url('kor').'">Kembali</a>
                             </div>
                             <!-- <ul class="nav navbar-right panel_toolbox">
                                 <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
@@ -140,14 +129,124 @@ class C_kategory extends CI_Controller
                         </div>
                         <div class="x_content">
                             <br />
-                            <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left form-data" action="<?= $link ?>" method="POST" enctype="multipart/form-data">
+                            <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left form-data" action="'. $link .'" method="POST" enctype="multipart/form-data">
 
                                 <div class="form-group">
                                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Kategori <span class="required">*</span>
                                     </label>
                                     <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <input type="hidden" id="first-name" name="id" value="<?= (isset($k)) ? $k->id_kategori : '' ?>" required="required" class="form-control col-md-7 col-xs-12">
-                                        <input type="text" id="first-name" name="nama" value="<?= (isset($k)) ? $k->nama_kategori : '' ?>" required="required" class="form-control col-md-7 col-xs-12">
+                                        <input type="hidden" id="first-name" name="id" value=" required="required" class="form-control col-md-7 col-xs-12">
+                                        <input type="text" id="first-name" name="nama" value="" required="required" class="form-control col-md-7 col-xs-12">
+                                    </div>
+                                </div>
+                                <div class="ln_solid"></div>
+                                <div class="form-group">
+                                    <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                                        <!-- <button class="btn btn-primary" type="button">Cancel</button> -->
+                                        <button type="submit" class="btn btn-success">Submit</button>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>';
+    }
+
+    public function edit($id = null)
+    {
+        $head = 'Kategori';
+        $subhead = 'Edit Kategori';
+        $link = base_url('edkor');
+        $where = array('id_kategori' => $id);
+        $k = $this->global->getAll('m_kategori', $where)->row_array();
+        
+        echo '<div class="right_col" role="main">
+    <div class="">
+        <div class="page-title">
+            <div class="title_left">
+                <h3>'.$head.'</h3>
+            </div>
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2>'.$subhead.'</h2>
+                            <div style="float: right;">
+                                <a class="btn btn-danger menus" href="'.base_url('kor').'">Kembali</a>
+                            </div>
+                            <!-- <ul class="nav navbar-right panel_toolbox">
+                                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                </li>
+                            </ul> -->
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <br />
+                            <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left form-data" action="'. $link .'" method="POST" enctype="multipart/form-data">
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Kategori <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input type="hidden" id="first-name" name="id" value="'.$k['id_kategori'].'" required="required" class="form-control col-md-7 col-xs-12">
+                                        <input type="text" id="first-name" name="nama" value="'.$k['nama_kategori'].'" required="required" class="form-control col-md-7 col-xs-12">
+                                    </div>
+                                </div>
+                                <div class="ln_solid"></div>
+                                <div class="form-group">
+                                    <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                                        <!-- <button class="btn btn-primary" type="button">Cancel</button> -->
+                                        <button type="submit" class="btn btn-success">Submit</button>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>';
+        
+    }
+
+    function form($head,$subhead,$link,$k = null){
+        echo '<div class="right_col" role="main">
+    <div class="">
+        <div class="page-title">
+            <div class="title_left">
+                <h3>'.$head.'</h3>
+            </div>
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2>'.$subhead.'</h2>
+                            <div style="float: right;">
+                                <a class="btn btn-danger menus" href="'.base_url('kor').'">Kembali</a>
+                            </div>
+                            <!-- <ul class="nav navbar-right panel_toolbox">
+                                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                </li>
+                            </ul> -->
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <br />
+                            <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left form-data" action="'. $link .'" method="POST" enctype="multipart/form-data">
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Kategori <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input type="hidden" id="first-name" name="id" value="'. (isset($k)) ? $k->id_kategori : '' .'" required="required" class="form-control col-md-7 col-xs-12">
+                                        <input type="text" id="first-name" name="nama" value="'. (isset($k)) ? $k->nama_kategori : '' .'" required="required" class="form-control col-md-7 col-xs-12">
                                     </div>
                                 </div>
                                 <div class="ln_solid"></div>
@@ -218,14 +317,12 @@ class C_kategory extends CI_Controller
                     'pesan' => 'data berhasil ubah',
                     'to' => 'kor'
                 );
-                $this->session->set_flashdata('sukses', 'data berhasil disimpan');
             } else {
                 $json = array(
                     'hasil' => 0,
                     'pesan' => 'data gagal ubah',
                     'to' => 'kor'
                 );
-                $this->session->set_flashdata('gagal', 'data gagal diubah');
             }
         } else {
            $json = array(
@@ -233,18 +330,15 @@ class C_kategory extends CI_Controller
                 'pesan' => 'data gagal ubah',
                 'to' => 'kor'
             );
-            $this->session->set_flashdata('gagal', 'data gagal diubah');
         }
          echo json_encode($json);
     }
 
     /* fungsi untuk delete data */
 
-    public function remove($id)
+    public function remove()
     {
-        $record = array(
-            "nama_kategori" => $this->input->post('nama'),
-        );
+        $id = $this->input->post('id');
         $where = array('id_kategori' => $id);
         $delete = $this->global->delete('m_kategori',$where);
         if ($delete > 0) {

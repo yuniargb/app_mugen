@@ -28,8 +28,8 @@ class Mo_global extends CI_Model
         return $this->db->affected_rows();
     }
 
-    function delete($id)
+    function delete($table,$where)
     {
-        $this->db->delete($this->table, array("id_customer" => $id));
+        $this->db->delete($table, $where);
     }
 }
