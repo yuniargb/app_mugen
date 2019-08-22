@@ -31,5 +31,6 @@ class Mo_global extends CI_Model
     function delete($table,$where)
     {
         $this->db->delete($table, $where);
+        return $this->db->affected_rows();
     }
 }

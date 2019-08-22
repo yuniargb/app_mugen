@@ -7,10 +7,6 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class C_kategory extends CI_Controller
 {
-    /* fungsi construct ini akan di load terlebih dahulu, sebelum fungsi index
-     * umumnya di dalam fungsi ini berupa settingan awal
-     */
-
     function __construct()
     {
         parent::__construct();
@@ -24,60 +20,107 @@ class C_kategory extends CI_Controller
 
 
     /* fungsi index yang di load pertama pada saat controller C_kategory di akses */
-
-    public function index()
+     public function ajax_list()
+    {
+        $list = $this->kategory->get_datatables();
+        $data = array();
+        $no = isset($_POST['start']);
+        foreach ($list as $l) {
+            $no++;
+            $row = array();
+            $row[] = $l->id_kategori;
+            $row[] = $l->nama_kategori;
+            $row[] = '<a href="'. base_url('eddkor/' . $l->id_kategori) .'" class="btn btn-warning menus">Edit</a>
+                                            <form class="form-data" method="post" action="'. base_url('hakor').'">
+                                                <input type="hidden" name="id" value="'. $l->id_kategori.'">
+                                                <button type="submit" class="btn btn-danger">Hapus</button>
+                                            </form>';
+ 
+            $data[] = $row;
+        }
+ 
+        $output = array(
+                        "draw" => isset($_POST['draw']),
+                        "recordsTotal" => $this->kategory->count_all(),
+                        "recordsFiltered" => $this->kategory->count_filtered(),
+                        "data" => $data,
+                );
+        //output to json format
+        echo json_encode($output);
+    }
+    public function kats($al)
     {
 
         $head = 'Kategori';
         $subhead = 'List Data Kategori';
         $kategori = $this->global->getAll('m_kategori')->result_array();
 
-        // print_r($kategori);
-        
-        // $json = array(
-        //     'head'      => 'Kategori',
-        //     'subhead'   => 'List Data Kategori',
-        //     'kategori'  => $this->global->getAll('m_kategori')->result()
-        // );
-        // $data = ('Actions', "<div class=\"text-center\"><a class=\"tip\" title='' href='"  "'><i class=\"fa fa-list\"></i></a> <a class=\"tip\" title='' href='' data-toggle='modal' data-target='#myModal'><i class=\"fa fa-users\"></i></a> <a class=\"tip\" title='' href='' data-toggle='modal' data-target='#myModal'><i class=\"fa fa-plus-circle\"></i></a> <a class=\"tip\" title='' href='' data-toggle='modal' data-target='#myModal'><i class=\"fa fa-edit\"></i></a> <a href='#' class='tip po' title='<b></b>' data-content=\"<p></p><a class='btn btn-danger po-delete' href=''></a> <button class='btn po-close'></button>\"  rel='popover'><i class=\"fa fa-trash-o\"></i></a></div>", 'id');
+
+        if($al == 'ads'){
+            $pes = 'Data berhasil ditambahkan!';
+            $stat = 1;
+        }elseif($al == 'adg'){
+            $pes = 'Data gagal ditambahkan!';
+            $stat = 0;
+        }elseif($al == 'eds'){
+            $pes = 'Data berhasil dubah!';
+            $stat = 1;
+        }elseif($al == 'edg'){
+            $pes = 'Data gagal dubah!';
+            $stat = 0;
+        }elseif($al == 'res'){
+            $pes = 'Data berhasil dihapus!';
+            $stat = 1;
+        }elseif($al == 'reg'){
+            $pes = 'Data gagal dihapus!';
+            $stat = 0;
+        }else{
+            $pes = '';
+            $stat = 1;
+        }
 
         echo '<div class="right_col" role="main">
                 <div class="page-title">
                     <div class="title_left">';
                     echo '<h3>'.$head.'</h3>';
                 echo '</div>
-                </div>
-                <div class="clearfix"></div>';
-                    echo '<h2>List Data '. $head .'</h2>';
+                <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="x_panel">
+                        <div class="x_title">';
+                    echo '<h2>'. $subhead .'</h2>';
                 echo '<div style="float: right;">
                         <a class="btn btn-success menus" href="'.base_url('takor') .'">Tambah</a>
                     </div>
                         <div class="clearfix"></div>
                     <div class="x_content">
-                        <div class="bs-example-popovers" id="alert" >
-                        </div>
-                        <table id="datatable" class="table table-striped table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>ID Kategori</th>
-                                    <th>Kategori</th>
-                                    <th>Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody>';
-                            foreach ($kategori as $msg) {
-                                echo '<tr>
-                                    <td>'. $msg['id_kategori'] .'</td>
-                                    <td>'. $msg['nama_kategori'] .'</td>
-                                    <td>
-                                        <a href="'. base_url('eddkor/' . $msg['id_kategori']) .'" class="btn btn-warning menus">Edit</a>
-                                        <form class="form-data" method="post" action="'. base_url('hakor').'">
-                                        <input type="hidden" name="id" value="'.$msg['id_kategori'].'">
-                                        <button type="submit" class="btn btn-danger">Hapus</button>
-                                        </form>
-                                    </td>
-                                </tr>';
-                            }
+                        <div class="bs-example-popovers" id="alert" >';
+                            if($pes != ''){
+                                if($stat == 1){
+                                    echo '<div class="alert alert-success alert-dismissible fade in" role="alert">
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
+                                        </button>
+                                        '.$pes.'
+                                    </div>';
+                                    } 
+                                if($stat == 0){ 
+                                    echo '<div class="alert alert-danger alert-dismissible fade in" role="alert">
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
+                                        </button>
+                                        '.$pes.'
+                                    </div>';
+                                    } 
+                                }
+                        echo '</div>
+                            <table id="datatable" class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>ID Kategori</th>
+                                        <th>Kategori</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>';
                         echo '</tbody>
                         </table>
                     </div>
@@ -85,13 +128,30 @@ class C_kategory extends CI_Controller
             </div>
         </div>
     </div>
-</div>';
+</div>
 
+<script>
+$(document).ready(function () {
+	$("#datatable").DataTable({
+		"processing": true, //Feature control the processing indicator.
+		"serverSide": true, //Feature control DataTables" server-side processing mode.
+		"order": [], //Initial no order.
 
-        
+		// Load data for the table"s content from an Ajax source
+		"ajax": {
+			"url": baseUrl("datak"),
+			"type": "POST"
+		},
+
+		//Set column definition initialisation properties.
+		"columnDefs": [{
+			"targets": [0], //first column / numbering column
+			"orderable": false, //set not orderable
+		}, ],
+    });
+});
+</script>';
         // $this->load->view('backend/kategori/homeKategori', $data);
-
-        
     }
 
     /* fungsi untuk mendapatkan data dan menampilkan di tabel pada file home.php */
@@ -101,11 +161,6 @@ class C_kategory extends CI_Controller
         $head = 'Kategori';
         $subhead = 'Tambah Kategori';
         $link = base_url('addkor');
-        // $this->load->view('template/headB', $data);
-        // $this->load->view('template/menuB', $data);
-        // $this->load->view('template/sidebarB', $data);
-        // $this->load->view('backend/kategori/addKategoriB', $data);
-        // $this->load->view('template/footerB', $data);
 
          echo '<div class="right_col" role="main">
     <div class="">
@@ -119,7 +174,7 @@ class C_kategory extends CI_Controller
                         <div class="x_title">
                             <h2>'.$subhead.'</h2>
                             <div style="float: right;">
-                                <a class="btn btn-danger menus" href="'.base_url('kor').'">Kembali</a>
+                                <a class="btn btn-danger menus" href="'.base_url('kor/dis').'">Kembali</a>
                             </div>
                             <!-- <ul class="nav navbar-right panel_toolbox">
                                 <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
@@ -177,7 +232,7 @@ class C_kategory extends CI_Controller
                         <div class="x_title">
                             <h2>'.$subhead.'</h2>
                             <div style="float: right;">
-                                <a class="btn btn-danger menus" href="'.base_url('kor').'">Kembali</a>
+                                <a class="btn btn-danger menus" href="'.base_url('kor/dis').'">Kembali</a>
                             </div>
                             <!-- <ul class="nav navbar-right panel_toolbox">
                                 <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
@@ -216,56 +271,7 @@ class C_kategory extends CI_Controller
         
     }
 
-    function form($head,$subhead,$link,$k = null){
-        echo '<div class="right_col" role="main">
-    <div class="">
-        <div class="page-title">
-            <div class="title_left">
-                <h3>'.$head.'</h3>
-            </div>
-            <div class="row">
-                <div class="col-md-12 col-sm-12 col-xs-12">
-                    <div class="x_panel">
-                        <div class="x_title">
-                            <h2>'.$subhead.'</h2>
-                            <div style="float: right;">
-                                <a class="btn btn-danger menus" href="'.base_url('kor').'">Kembali</a>
-                            </div>
-                            <!-- <ul class="nav navbar-right panel_toolbox">
-                                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                                </li>
-                            </ul> -->
-                            <div class="clearfix"></div>
-                        </div>
-                        <div class="x_content">
-                            <br />
-                            <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left form-data" action="'. $link .'" method="POST" enctype="multipart/form-data">
-
-                                <div class="form-group">
-                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Kategori <span class="required">*</span>
-                                    </label>
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <input type="hidden" id="first-name" name="id" value="'. (isset($k)) ? $k->id_kategori : '' .'" required="required" class="form-control col-md-7 col-xs-12">
-                                        <input type="text" id="first-name" name="nama" value="'. (isset($k)) ? $k->nama_kategori : '' .'" required="required" class="form-control col-md-7 col-xs-12">
-                                    </div>
-                                </div>
-                                <div class="ln_solid"></div>
-                                <div class="form-group">
-                                    <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                                        <!-- <button class="btn btn-primary" type="button">Cancel</button> -->
-                                        <button type="submit" class="btn btn-success">Submit</button>
-                                    </div>
-                                </div>
-
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>';
-    }
+    
 
     public function addpost()
     {
@@ -279,24 +285,22 @@ class C_kategory extends CI_Controller
                 $json = array(
                     'hasil' => 1,
                     'pesan' => 'data berhasil ditambahkan',
-                    'to' => 'kor'
+                    'to' => 'kor/ads'
                 );
-                $this->session->set_flashdata('sukses', 'data berhasil disimpan');
+                
             } else {
                 $json = array(
                     'hasil' => 0,
                     'pesan' => 'data gagal ditambahkan',
-                    'to' => 'kor'
+                    'to' => 'kor/adg'
                 );
-                $this->session->set_flashdata('gagal', 'data gagal disimpan');
             }
         } else {
             $json = array(
                 'hasil' => 0,
                 'pesan' => 'data gagal ditambahkan',
-                'to' => 'kor'
+                'to' => 'kor/adg'
             );
-            $this->session->set_flashdata('gagal', 'data gagal disimpan');
         }
         echo json_encode($json);
     }
@@ -315,20 +319,20 @@ class C_kategory extends CI_Controller
                 $json = array(
                     'hasil' => 1,
                     'pesan' => 'data berhasil ubah',
-                    'to' => 'kor'
+                    'to' => 'kor/eds'
                 );
             } else {
                 $json = array(
                     'hasil' => 0,
                     'pesan' => 'data gagal ubah',
-                    'to' => 'kor'
+                    'to' => 'kor/edg'
                 );
             }
         } else {
            $json = array(
                 'hasil' => 0,
                 'pesan' => 'data gagal ubah',
-                'to' => 'kor'
+                'to' => 'kor/edg'
             );
         }
          echo json_encode($json);
@@ -345,13 +349,13 @@ class C_kategory extends CI_Controller
             $json = array(
                 'hasil' => 1,
                 'pesan' => 'data berhasil hapus',
-                'to' => 'kor'
+                'to' => 'kor/res'
             );
         } else {
             $json = array(
                 'hasil' => 0,
                 'pesan' => 'data gagal hapus',
-                'to' => 'kor'
+                'to' => 'kor/reg'
             );
         }
 

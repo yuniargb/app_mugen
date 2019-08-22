@@ -82,7 +82,7 @@ function baseUrl(link) {
 </script>
 
 <script src="<?= base_url('public/') ?>build/js/custom.min.js"></script>
-<script src="<?= base_url('public/') ?>build/js/script.js?v=1.2"></script>
+<script src="<?= base_url('public/') ?>build/js/script.js?v=1.3"></script>
 
 </body>
 
